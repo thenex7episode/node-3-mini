@@ -1,11 +1,20 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mc = require( `./controllers/messages_controller` );
+const session = require('session')
 
 const app = express();
 
 app.use( bodyParser.json() );
 app.use( express.static( `${__dirname}/../build` ) );
+app.use(session({
+    secret: 'DMPC',
+    resave: false,
+    saveUnitialized: true,
+    cookie: {
+        maxAge: 1000 * 10;
+    }
+}))
 
 app.post( "/api/messages", mc.create );
 app.get( "/api/messages", mc.read );
